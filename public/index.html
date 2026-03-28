@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OmniCalc</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">Ω</div>
+      <div>
+        <div class="title">OmniCalc</div>
+        <div class="subtitle" data-i18n="subtitle">Калькулятор + конвертери</div>
+      </div>
+    </div>
+
+    <div class="search">
+      <input
+      id="toolSearch"
+      name="tool_search_omni"
+      type="search"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+      inputmode="search"
+      data-i18n-placeholder="searchPlaceholder"
+    />
+      <div id="searchHint" class="searchHint" hidden></div>
+    </div>
+
+    <button id="themeBtn" class="iconBtn" type="button" data-i18n-aria="theme_aria" aria-label="Перемикач теми" data-i18n-title="theme_title" title="Тема">
+      🌙
+    </button>
+
+    <button class="iconBtn" id="langBtn" type="button" data-lang-btn>UA</button>
+
+  </header>
+
+  <main class="layout">
+    <nav class="sidebar">
+        <button class="navBtn isActive" data-view="calc" data-i18n="nav_calc"></button>
+        <button class="navBtn" data-view="units" data-i18n="nav_units">📏 Конвертер одиниць</button>
+        <button class="navBtn" data-view="currency" data-i18n="nav_currency">💰 Валюта</button>
+        <button class="navBtn" data-view="bases" data-i18n="nav_bases">🔢 Системи числення</button>
+
+      <div class="navSpacer"></div>
+
+      <button id="historyToggle" class="navBtn navBtnSecondary" type="button" data-i18n="nav_history">
+        Історія ⌄
+      </button>
+    </nav>
+
+    <section class="content">
+        <div id="favoritesRow" class="favoritesRow" hidden>
+          <div class="favoritesBtns" id="favoritesBtns"></div>
+        </div>
+      
+        <section class="view isVisible" id="view-calc">
+        <h1 data-i18n="calc_title">Калькулятор</h1>
+      
+        <div class="card calcCard">
+          <input
+            id="calcInput"
+            name="calc_input_omni"
+            type="text"
+            class="input calcScreen mono"
+            data-i18n-placeholder="calc_placeholder"
+            placeholder="Наприклад: (2+3)*4"
+            autocomplete="off"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+        />
+          <div id="calcPreview" class="calcPreview" data-i18n-title="calc_preview_title" title="Клікни по виразу, щоб редагувати">—</div>
+      
+          <div class="calcGrid">
+            <button class="cbtn cbtn2" data-k="AC">AC</button>
+            <button class="cbtn cbtn2" data-k="(">(</button>
+            <button class="cbtn cbtn2" data-k=")">)</button>
+            <button class="cbtn cbtn2" data-k="⌫">⌫</button>
+      
+            <button class="cbtn" data-k="7">7</button>
+            <button class="cbtn" data-k="8">8</button>
+            <button class="cbtn" data-k="9">9</button>
+            <button class="cbtn cbtnOp" data-k="/">÷</button>
+      
+            <button class="cbtn" data-k="4">4</button>
+            <button class="cbtn" data-k="5">5</button>
+            <button class="cbtn" data-k="6">6</button>
+            <button class="cbtn cbtnOp" data-k="*">×</button>
+      
+            <button class="cbtn" data-k="1">1</button>
+            <button class="cbtn" data-k="2">2</button>
+            <button class="cbtn" data-k="3">3</button>
+            <button class="cbtn cbtnOp" data-k="-">−</button>
+      
+            <button class="cbtn cbtn2" data-k="%">%</button>
+            <button class="cbtn" data-k="0">0</button>
+            <button class="cbtn" data-k=".">.</button>
+            <button class="cbtn cbtnOp" data-k="+">+</button>
+      
+            <button class="cbtn cbtn2" data-k="sqrt">√</button>
+            <button id="calcEq" class="cbtn cbtnEq" type="button">=</button>
+          </div>
+      
+          <div class="row">
+            <div id="calcMsg" class="msg"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- UNITS -->
+      <section class="view" id="view-units">
+        <h1 data-i18n="units_title">Конвертер одиниць</h1>
+      
+        <div class="card">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px;">
+                <div id="unitTitle" class="centerTitle">Довжина</div>
+                <button id="favUnitBtn" class="btnSecondary" type="button">⭐</button>
+            </div>
+      
+            <div class="pillRow">
+              <button class="pill isActive" data-unit-tab="length" data-i18n="unitTab_length">Довжина</button>
+              <button class="pill" data-unit-tab="mass" data-i18n="unitTab_mass">Маса</button>
+              <button class="pill" data-unit-tab="volume" data-i18n="unitTab_volume">Обʼєм</button>
+              <button class="pill" data-unit-tab="area" data-i18n="unitTab_area">Площа</button>
+              <button class="pill" data-unit-tab="temp" data-i18n="unitTab_temp">Температура</button>
+            </div>
+          
+            <div class="twoSide">
+              <div class="side">
+                <label class="label" data-i18n="label_from">З</label>
+                <select id="unitFrom" class="select"></select>
+                <input
+                    id="unitLeft"
+                    name="unit_left_omni"
+                    type="text"
+                    class="input mono"
+                    inputmode="decimal"
+                    data-i18n-placeholder="common_example_number"
+                    placeholder="Напр. 10"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    autocorrect="off"
+                    spellcheck="false"
+              />
+              </div>
+          
+              <button id="unitSwap" class="swapBtn" type="button" title="Поміняти місцями">↔</button>
+          
+              <div class="side">
+                <label class="label" data-i18n="label_to">В</label>
+                <select id="unitTo" class="select"></select>
+                <input
+                    id="unitRight"
+                    name="unit_right_omni"
+                    type="text"
+                    class="input mono"
+                    inputmode="decimal"
+                    data-i18n-placeholder="common_result"
+                    placeholder="Результат"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    autocorrect="off"
+                    spellcheck="false"
+              />
+              </div>
+            </div>
+          
+            <div class="row">
+                <button id="unitClearBtn" class="btnSecondary" type="button" data-i18n="clear_fields">Очистити поля</button>
+                <div class="msg" id="unitMsg"></div>
+              </div>
+          </div>
+      </section>
+
+      <!-- CURRENCY -->
+      <section class="view" id="view-currency">
+        <h1 data-i18n="currency_title">Конвертер валют</h1>      
+        <div class="card">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                <div class="centerTitle" data-i18n="currency_center">Валюта</div>
+                <button id="favFxBtn" class="btnSecondary" type="button">⭐</button>
+              </div>
+            <div class="twoSide">
+              <div class="side">
+                <label class="label" data-i18n="label_from">З</label>
+                <select id="fxFrom" class="select"></select>
+                <input
+                    id="fxLeft"
+                    name="fx_left_omni"
+                    type="text"
+                    class="input mono"
+                    inputmode="decimal"
+                    data-i18n-placeholder="common_example_money"
+                    placeholder="Напр. 100"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    autocorrect="off"
+                    spellcheck="false"
+              />
+              </div>
+          
+              <button id="fxSwap" class="swapBtn" type="button" data-i18n-title="swap_title" title="Поміняти місцями">↔</button>
+          
+              <div class="side">
+                <label class="label" data-i18n="label_to">В</label>
+                <select id="fxTo" class="select"></select>
+                <input
+                    id="fxRight"
+                    name="fx_right_omni"
+                    type="text"
+                    class="input mono"
+                    inputmode="decimal"
+                    placeholder="Результат"
+                    data-i18n-placeholder="common_result"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    autocorrect="off"
+                    spellcheck="false"
+              />
+              </div>
+            </div>
+          
+            <div class="row">
+                <button id="fxRefresh" class="btnSecondary" type="button" data-i18n="fx_refresh">Оновити список валют</button>
+                <button id="fxClearBtn" class="btnSecondary" type="button" data-i18n="clear_fields">Очистити поля</button>
+                <div class="msg" id="fxMsg"></div>
+              </div>
+          
+            <div class="tiny" id="fxMeta"></div>
+          </div>
+      </section>
+
+      <!-- BASES -->
+      <section class="view" id="view-bases">
+        <h1 data-i18n="bases_title">Системи числення</h1>
+
+        <div class="card grid2">
+          <div>
+            <label class="label">BIN (2)</label>
+            <input id="bin" name="bin_omni" type="text" class="input mono" placeholder="101010" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </div>
+          <div>
+            <label class="label">OCT (8)</label>
+            <input id="oct" name="oct_omni" type="text" class="input mono" placeholder="52" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </div>
+          <div>
+            <label class="label">DEC (10)</label>
+            <input id="dec" name="dec_omni" type="text" class="input mono" placeholder="42" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </div>
+          <div>
+            <label class="label">HEX (16)</label>
+            <input id="hex" name="hex_omni" type="text" class="input mono" placeholder="2A" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </div>
+
+          <div class="span2">
+            <div class="row">
+                <button id="baseClearBtn" class="btnSecondary" type="button" data-i18n="clear_fields">Очистити поля</button>
+              <div class="msg" id="baseMsg"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <!-- HISTORY PANEL -->
+  <section id="historyPanel" class="historyPanel isHidden">
+    <div class="historyHeader">
+        <div class="historyTitle" data-i18n="history_title">Останні операції</div>
+      
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button id="historyRefresh" class="btnSecondary" type="button" data-i18n="history_refresh">Оновити</button>
+            <button id="historyCopyAll" class="btnSecondary" type="button" data-i18n="copy_history">Скопіювати історію</button>
+            <button id="historyDownload" class="btnSecondary" type="button" data-i18n="save_txt">Зберегти .txt</button>
+            <button id="historyClose" class="btnSecondary" type="button" data-i18n-title="close" title="Закрити">✕</button>
+            <button id="historyClear" class="btn danger" data-i18n="history_clear">Очистити</button>
+          </div>
+      
+      </div>
+
+      <div id="historyFilters" class="historyFilters" data-i18n-aria="history_filter_aria" aria-label="Фільтр історії">
+        <button class="chip isActive" type="button" data-filter="all" data-i18n="history_filter_all">Усі</button>
+        <button class="chip" type="button" data-filter="calc">🧮</button>
+        <button class="chip" type="button" data-filter="currency">💰</button>
+        <button class="chip" type="button" data-filter="units">📏</button>
+        <button class="chip" type="button" data-filter="bases">🔢</button>
+      </div>
+
+    <div id="historyList" class="historyList">
+        <div class="muted" data-i18n="history_empty">Поки порожньо…</div>
+    </div>
+  </section>
+
+  <!-- FAVORITES ROW (moves into the active tool view) -->
+  <footer class="footer">
+    <a class="footerLink" href="./guide.html" data-i18n="footer_guide">Міні-довідник (як вводити)</a>
+    <button class="footerBtn" type="button" onclick="location.href='./about.html'" data-i18n="footer_about">Про автора</button>
+  </footer>
+  <script src="./i18n.js"></script>
+  <script src="./js/helpers.js"></script>
+  <script src="./js/navigation.js"></script>
+  <script src="./js/theme.js"></script>
+  <script src="./js/lang.js"></script>
+  <script src="./js/search.js"></script>
+  <script src="./js/history.js"></script>
+  <script src="./js/currency.js"></script>
+  <script src="./js/units.js"></script>
+  <script src="./js/bases.js"></script>
+  <script src="./js/calc.js"></script>
+  <script src="./js/init.js"></script>
+
+  <div id="toastRoot" class="toastRoot" aria-live="polite" aria-atomic="true"></div>
+
+</body>
+</html>

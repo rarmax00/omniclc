@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OmniCalc — Про автора</title>
+  <meta data-i18n-page-title="about_page_title" />
+  <link rel="stylesheet" href="./styles.css" />
+
+  <script>
+    (function(){
+      const t = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">Ω</div>
+      <div>
+        <div class="title">OmniCalc</div>
+        <div class="subtitle" data-i18n="about_subtitle">Про автора</div>
+      </div>
+    </div>
+
+    <button class="iconBtn" type="button" data-lang-btn>UA</button>
+  </header>
+
+  <main class="pageWrap">
+    <div class="backRow">
+      <a class="backLink" href="./index.html" data-i18n="back">← Назад</a>
+      <div class="subtitle" data-i18n="about_back_subtitle">Коротко про автора</div>
+    </div>
+
+    <section class="pageCard">
+      <h1 data-i18n="about_h1">Про автора</h1>
+
+      <ul>
+        <li><b data-i18n="about_author_label">Автор:</b> <span data-i18n="about_author_value">Максим</span></li>
+        <li><b data-i18n="about_city_label">Місто:</b> <span data-i18n="about_city_value">Львів</span></li>
+        <li><b data-i18n="about_project_label">Проєкт:</b> <span data-i18n="about_project_value">OmniCalc</span></li>
+        <li><b data-i18n="about_purpose_label">Призначення:</b> <span data-i18n="about_purpose_value">навчальний проєкт з вебпрограмування</span></li>
+      </ul>
+
+      <p class="muted" style="margin-top:12px;" data-i18n="about_contacts_hint">
+        Контакти/посилання (за потреби): GitHub / Telegram / Email.
+      </p>
+    </section>
+  </main>
+
+  <script src="./i18n.js"></script>
+  <script>
+    const langBtn = document.querySelector("[data-lang-btn]");
+
+    langBtn?.addEventListener("click", () => {
+      window.I18N_APP.toggleLang();
+    });
+
+    window.I18N_APP.applyI18n();
+  </script>
+</body>
+</html>

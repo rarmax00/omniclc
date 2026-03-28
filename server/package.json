@@ -1,0 +1,16 @@
+{
+    "name": "omniclc-server",
+    "version": "2.0.0",
+    "description": "Backend API for OmniCalc",
+    "type": "module",
+    "main": "src/index.js",
+    "scripts": {
+        "dev": "node src/index.js",
+        "start": "node src/index.js"
+    },
+    "dependencies": {
+        "dotenv": "^17.3.1",
+        "express": "^4.19.2",
+        "openai": "^6.33.0"
+    }
+}

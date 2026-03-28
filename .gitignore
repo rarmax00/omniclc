@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+.env
+*.log
+__MACOSX/
+server/data/history.json
+server/node_modules/

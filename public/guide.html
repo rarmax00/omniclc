@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OmniCalc — Міні-довідник</title>
+  <meta data-i18n-page-title="guide_page_title" />
+  <link rel="stylesheet" href="./styles.css" />
+
+  <script>
+    (function(){
+      const t = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">Ω</div>
+      <div>
+        <div class="title">OmniCalc</div>
+        <div class="subtitle" data-i18n="guide_subtitle">Міні-довідник</div>
+      </div>
+    </div>
+
+    <button class="iconBtn" type="button" data-lang-btn>UA</button>
+  </header>
+
+  <main class="pageWrap">
+    <div class="backRow">
+      <a class="backLink" href="./index.html" data-i18n="back">← Назад</a>
+      <div class="subtitle" data-i18n="guide_back_subtitle">Як користуватися</div>
+    </div>
+
+    <section class="pageCard">
+      <h1 data-i18n="guide_h1">Про програму</h1>
+      <p class="muted" data-i18n="guide_intro">Натисни на пункт — внизу з’явиться пояснення. Одночасно показується тільки один пункт.</p>
+
+      <div class="guideMenu" id="guideMenu">
+        <button class="guideItem" type="button" data-key="smart" data-i18n="guide_menu_smart">Розумний пошук</button>
+        <button class="guideItem" type="button" data-key="calc" data-i18n="guide_menu_calc">Калькулятор</button>
+        <button class="guideItem" type="button" data-key="units" data-i18n="guide_menu_units">Конвертер одиниць</button>
+        <button class="guideItem" type="button" data-key="currency" data-i18n="guide_menu_currency">Конвертер валют</button>
+        <button class="guideItem" type="button" data-key="bases" data-i18n="guide_menu_bases">Системи числення</button>
+        <button class="guideItem" type="button" data-key="history" data-i18n="guide_menu_history">Історія та “Повтор”</button>
+      </div>
+
+      <div class="guideContent isHidden" id="guideContent" aria-live="polite">
+        <h2 class="guideTitle" id="guideTitle"></h2>
+        <div id="guideBody"></div>
+      </div>
+
+      <div class="guideHints">
+        <h3 data-i18n="guide_hotkeys">⌨️ Гарячі клавіші</h3>
+
+        <div class="hintRow">
+          <span class="hintKey">Ctrl / Cmd + K</span>
+          <span class="hintText" data-i18n="guide_hotkey_open_search">відкрити пошук</span>
+        </div>
+
+        <div class="hintRow">
+          <span class="hintKey">Esc</span>
+          <span class="hintText" data-i18n="guide_hotkey_clear_search">очистити пошук</span>
+        </div>
+
+        <div class="hintRow">
+          <span class="hintKey">↑ ↓</span>
+          <span class="hintText" data-i18n="guide_hotkey_pick_hint">вибір підказки</span>
+        </div>
+
+        <div class="hintRow">
+          <span class="hintKey">Enter</span>
+          <span class="hintText" data-i18n="guide_hotkey_go">перейти / виконати</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./i18n.js"></script>
+  <script>
+    function getGuideData() {
+      const { t } = window.I18N_APP;
+
+      return {
+        smart: {
+          title: t("guide_smart_title"),
+          body: t("guide_smart_body")
+        },
+        calc: {
+          title: t("guide_calc_title"),
+          body: t("guide_calc_body")
+        },
+        units: {
+          title: t("guide_units_title"),
+          body: t("guide_units_body")
+        },
+        currency: {
+          title: t("guide_currency_title"),
+          body: t("guide_currency_body")
+        },
+        bases: {
+          title: t("guide_bases_title"),
+          body: t("guide_bases_body")
+        },
+        history: {
+          title: t("guide_history_title"),
+          body: t("guide_history_body")
+        }
+      };
+    }
+
+    const menu = document.getElementById("guideMenu");
+    const content = document.getElementById("guideContent");
+    const titleEl = document.getElementById("guideTitle");
+    const bodyEl = document.getElementById("guideBody");
+
+    function setActive(key) {
+      menu.querySelectorAll(".guideItem").forEach(btn => {
+        btn.classList.toggle("isActive", btn.dataset.key === key);
+      });
+
+      const GUIDE = getGuideData();
+      const item = GUIDE[key];
+      if (!item) return;
+
+      titleEl.textContent = item.title;
+      bodyEl.innerHTML = item.body;
+      content.classList.remove("isHidden");
+    }
+
+    function renderGuideContent() {
+      const activeBtn = menu.querySelector(".guideItem.isActive");
+      if (!activeBtn) return;
+      setActive(activeBtn.dataset.key);
+    }
+
+    menu.addEventListener("click", (e) => {
+      const btn = e.target.closest(".guideItem[data-key]");
+      if (!btn) return;
+      setActive(btn.dataset.key);
+    });
+
+    const langBtn = document.querySelector("[data-lang-btn]");
+
+    langBtn?.addEventListener("click", () => {
+      window.I18N_APP.toggleLang();
+      renderGuideContent();
+    });
+
+    window.I18N_APP.applyI18n();
+  </script>
+</body>
+</html>
