@@ -10,4 +10,5 @@ export const env = {
   historyDefaultLimit: 20,
   historyMaxLimit: 50,
 
+  databaseUrl: process.env.DATABASE_URL || "",
 };

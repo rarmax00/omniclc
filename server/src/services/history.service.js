@@ -1,56 +1,52 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-import { AppError } from "../utils/errors.js";
+import { pool } from "./db.service.js";
 import { env } from "../config/env.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+export async function getHistory(limit = env.historyDefaultLimit) {
+  const result = await pool.query(
+    `
+    SELECT id, type, input, output, payload, ts
+    FROM history_items
+    ORDER BY ts DESC, id DESC
+    LIMIT $1
+    `,
+    [limit]
+  );
 
-const HISTORY_FILE = path.join(__dirname, "../../data/history.json");
-
-function ensureHistoryFile() {
-  const dir = path.dirname(HISTORY_FILE);
-
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-
-  if (!fs.existsSync(HISTORY_FILE)) {
-    fs.writeFileSync(HISTORY_FILE, "[]", "utf-8");
-  }
+  return result.rows;
 }
 
-function readAll() {
-  ensureHistoryFile();
+export async function addHistoryItem(entry) {
+  await pool.query(
+    `
+    INSERT INTO history_items (type, input, output, payload, ts)
+    VALUES ($1, $2, $3, $4, $5)
+    `,
+    [
+      entry.type,
+      entry.input,
+      entry.output,
+      entry.payload ?? null,
+      entry.ts ? new Date(entry.ts) : new Date(),
+    ]
+  );
 
-  try {
-    const raw = fs.readFileSync(HISTORY_FILE, "utf-8");
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    throw new AppError("Failed to read history storage", 500);
-  }
+  await pool.query(
+    `
+    DELETE FROM history_items
+    WHERE id NOT IN (
+      SELECT id
+      FROM history_items
+      ORDER BY ts DESC, id DESC
+      LIMIT $1
+    )
+    `,
+    [env.historyMaxItems]
+  );
+
+  return true;
 }
 
-function writeAll(items) {
-  fs.writeFileSync(HISTORY_FILE, JSON.stringify(items, null, 2), "utf-8");
-}
-
-export function getHistory(limit = env.historyDefaultLimit) {
-  const items = readAll();
-  return items.slice(0, limit);
-}
-
-export function addHistoryItem(entry) {
-  const items = readAll();
-  items.unshift(entry);
-  const trimmed = items.slice(0, env.historyMaxItems);
-  writeAll(trimmed);
-  return trimmed;
-}
-
-export function clearHistory() {
-  writeAll([]);
+export async function clearHistory() {
+  await pool.query(`DELETE FROM history_items`);
   return [];
 }
