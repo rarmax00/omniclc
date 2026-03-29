@@ -37,17 +37,6 @@ export async function getRates(req, res) {
 export async function postCurrencyConvert(req, res) {
   const data = await convertCurrency(req.validatedBody);
 
-  await addHistoryItem({
-    type: "currency",
-    input: `${req.validatedBody.amount} ${req.validatedBody.from} to ${req.validatedBody.to}`,
-    output: String(data.result),
-    payload: {
-      ...req.validatedBody,
-      ...data,
-    },
-    ts: new Date().toISOString(),
-  });
-
   res.json({
     ok: true,
     ...data,
@@ -65,17 +54,6 @@ export async function postCurrencyBatch(req, res) {
 export async function postUnitsConvert(req, res) {
   const result = convertUnits(req.validatedBody);
 
-  await addHistoryItem({
-    type: "units",
-    input: `${req.validatedBody.amount} ${req.validatedBody.from} to ${req.validatedBody.to}`,
-    output: String(result),
-    payload: {
-      ...req.validatedBody,
-      result,
-    },
-    ts: new Date().toISOString(),
-  });
-
   res.json({
     ok: true,
     result,
@@ -84,17 +62,6 @@ export async function postUnitsConvert(req, res) {
 
 export async function postBasesConvert(req, res) {
   const data = convertBases(req.validatedBody.type, req.validatedBody.value);
-
-  await addHistoryItem({
-    type: "bases",
-    input: `${req.validatedBody.value} ${req.validatedBody.type}`,
-    output: JSON.stringify(data),
-    payload: {
-      ...req.validatedBody,
-      ...data,
-    },
-    ts: new Date().toISOString(),
-  });
 
   res.json({
     ok: true,

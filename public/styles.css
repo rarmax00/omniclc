@@ -949,3 +949,363 @@ button:active,
 .backLink:active {
   filter: brightness(0.98);
 }
+
+/* ================================
+   MOBILE / TABLET RESPONSIVE PATCH
+   ================================ */
+
+/* планшети і менші ноутбуки */
+@media (max-width: 1024px){
+  .layout{
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 14px;
+  }
+
+  .sidebar{
+    position: static;
+    top: auto;
+    height: auto;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .navBtn{
+    width: auto;
+    flex: 1 1 calc(50% - 8px);
+    min-width: 140px;
+    text-align: center;
+  }
+
+  .navSpacer{
+    display: none;
+  }
+
+  #historyToggle{
+    flex-basis: 100%;
+  }
+
+  .content{
+    align-items: stretch;
+  }
+
+  .view{
+    max-width: 100%;
+  }
+
+  .favoritesRow{
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+    pointer-events: auto;
+  }
+
+  .favoritesBtns{
+    width: max-content;
+    max-width: none;
+    justify-content: flex-start;
+    padding-right: 4px;
+  }
+
+  .favPill{
+    min-width: 150px;
+  }
+}
+
+/* телефони */
+@media (max-width: 768px){
+  .topbar{
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .brand{
+    min-width: 0;
+    flex: 1 1 calc(100% - 120px);
+  }
+
+  .brand > div:last-child{
+    min-width: 0;
+  }
+
+  .title{
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .subtitle{
+    font-size: 11px;
+    line-height: 1.25;
+  }
+
+  .search{
+    order: 3;
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .search input{
+    padding: 12px 14px;
+    font-size: 16px; /* щоб iPhone не зумував поле */
+  }
+
+  .searchHint{
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    max-height: min(42vh, 320px);
+    font-size: 14px;
+  }
+
+  #themeBtn,
+  #langBtn{
+    flex: 0 0 auto;
+    min-width: 48px;
+    min-height: 44px;
+    padding: 10px 12px;
+  }
+
+  .layout{
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .sidebar{
+    padding: 10px;
+  }
+
+  .navBtn{
+    flex: 1 1 calc(50% - 8px);
+    min-width: 0;
+    padding: 11px 10px;
+    font-size: 14px;
+    border-radius: 12px;
+  }
+
+  h1{
+    font-size: 22px;
+    margin: 4px 0 8px;
+  }
+
+  .card{
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .row{
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+
+  .row > *{
+    min-width: 0;
+  }
+
+  .btn,
+  .btnSecondary,
+  .iconBtn,
+  .footerBtn{
+    min-height: 44px;
+  }
+
+  .twoSide{
+    grid-template-columns: 1fr;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .side{
+    gap: 8px;
+  }
+
+  .swapBtn{
+    width: 100%;
+    height: 44px;
+    border-radius: 14px;
+    font-size: 18px;
+    align-self: stretch;
+  }
+
+  .grid2{
+    grid-template-columns: 1fr;
+  }
+
+  .span2{
+    grid-column: auto;
+  }
+
+  .pillRow{
+    gap: 6px;
+  }
+
+  .pill{
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .calcScreen{
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  .calcPreview{
+    font-size: 13px;
+    padding: 11px 12px;
+  }
+
+  .calcPreview.isResult{
+    font-size: 20px;
+  }
+
+  .calcGrid{
+    gap: 8px;
+  }
+
+  .cbtn{
+    min-height: 48px;
+    padding: 12px 8px;
+    font-size: 15px;
+    border-radius: 14px;
+  }
+
+  .cbtnEq{
+    grid-column: span 3;
+  }
+
+  .historyPanel{
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    max-height: 62vh;
+    padding: 10px;
+    border-radius: 14px;
+  }
+
+  .historyHeader{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .historyHeader > div:last-child{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .historyHeader .btnSecondary,
+  .historyHeader .btn,
+  .historyHeader .danger{
+    flex: 1 1 calc(50% - 8px);
+    min-width: 0;
+  }
+
+  .historyItem{
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+  }
+
+  .historyMain{
+    word-break: break-word;
+  }
+
+  .smartResultLine{
+    font-size: 18px;
+    line-height: 1.25;
+    word-break: break-word;
+  }
+
+  .smartAction{
+    line-height: 1.25;
+  }
+
+  .favoritesRow{
+    margin-bottom: 10px;
+  }
+
+  .favPill{
+    min-width: 135px;
+    min-height: 40px;
+    padding: 9px 32px 9px 12px;
+    font-size: 13px;
+  }
+
+  .pageWrap{
+    padding: 14px 12px 24px;
+  }
+
+  .pageCard{
+    padding: 14px;
+  }
+
+  .footer{
+    padding: 14px 12px 22px;
+  }
+}
+
+/* дуже вузькі телефони */
+@media (max-width: 480px){
+  .topbar{
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .logo{
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+  }
+
+  .title{
+    font-size: 15px;
+  }
+
+  .subtitle{
+    font-size: 10px;
+  }
+
+  .navBtn{
+    flex-basis: 100%;
+  }
+
+  .card{
+    padding: 10px;
+  }
+
+  .calcGrid{
+    gap: 6px;
+  }
+
+  .cbtn{
+    min-height: 46px;
+    font-size: 14px;
+    padding: 10px 6px;
+  }
+
+  .smartResultLine{
+    font-size: 16px;
+  }
+
+  .historyHeader .btnSecondary,
+  .historyHeader .btn,
+  .historyHeader .danger{
+    flex-basis: 100%;
+  }
+
+  .favPill{
+    min-width: 120px;
+  }
+
+  .searchHint{
+    max-height: 45vh;
+  }
+}
